@@ -1,0 +1,20 @@
+{
+  "name": "globaldevconnect",
+  "version": "1.0.0",
+  "description": "social media for developers",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+
+  },
+  "keywords": [
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Nabeel Farooq",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
