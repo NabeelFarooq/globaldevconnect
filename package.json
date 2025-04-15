@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
-
   },
   "keywords": [
     "nodejs",
@@ -15,6 +14,7 @@
   "author": "Nabeel Farooq",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.13.2"
   }
 }
