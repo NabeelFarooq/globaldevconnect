@@ -46,4 +46,37 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     res.status(400).send("ERROR : " + err.message);
   }
 });
+
+userRouter.get("/feed", userAuth, async (req, res) => {
+  try {
+    // user should see all the user cards except
+    // 0. his own card
+    // 1. his connections
+    // 2. ignored people
+    // 3. already sent the connection request
+
+    const loggedInUser = req.user;
+    // find all connection requests (sent + received)
+    const connectionRequests = await ConnectionRequest.find({
+      $or: [{ fromUserId: loggedInUser._id }, { toUserId: loggedInUser._id }],
+    }).select("fromUserId toUserId");
+
+    const hideUsersFromFeed = new Set();
+    connectionRequests.forEach((request) => {
+      hideUsersFromFeed.add(request.fromUserId.toString());
+      hideUsersFromFeed.add(request.toUserId.toString());
+    });
+    // console.log("hideUsersFromFeed : ", hideUsersFromFeed);
+
+    const users = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(hideUsersFromFeed) } },
+        { _id: { $ne: loggedInUser._id } },
+      ],
+    }).select(USER_SAFE_DATA);
+    res.send(users);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 module.exports = userRouter;
