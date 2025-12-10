@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
@@ -27,7 +28,7 @@ connectDB()
   .then(() => {
     console.log("Database connection is successful");
 
-    app.listen(7777, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Server is successfully listening on port 7777............");
     });
   })
