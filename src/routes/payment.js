@@ -64,7 +64,7 @@ paymentRouter.post("/api/payment/webhook", async (req, res) => {
     payment.status = req.body.payload.payment.entity.status;
     await payment.save();
 
-    const user = await user.findOne({ _id: payment.userId });
+    const user = await User.findOne({ _id: payment.userId });
     user.isPremium = true;
     user.membershipType = payment.notes.membershipType;
     await user.save();
