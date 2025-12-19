@@ -1,6 +1,7 @@
 require("dotenv").config();
 require("./utils/cronjob");
 const express = require("express");
+const http = require("http");
 const connectDB = require("./config/database");
 const app = express();
 
@@ -21,17 +22,21 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
+const initializeSocket = require("./utils/socket");
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/", paymentRouter);
 
+const server = http.createServer(app);
+initializeSocket(server);
+
 connectDB()
   .then(() => {
     console.log("Database connection is successful");
 
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log("Server is successfully listening on port 7777............");
     });
   })
